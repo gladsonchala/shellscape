@@ -4,6 +4,7 @@ WORKDIR /app
 COPY frontend/package*.json frontend/
 RUN cd frontend && npm install --legacy-peer-deps
 COPY frontend/ frontend/
+COPY frontend/src frontend/src
 RUN cd frontend && npm run build
 
 # Stage 2: Set up backend and serve
