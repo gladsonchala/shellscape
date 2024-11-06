@@ -1,12 +1,17 @@
-const { executeCommand } = require('../services/commandService');
+const exec = require('child_process').exec;
+const { isCommandAllowed } = require('../utils/commandUtils');
 
-exports.runCommand = async (req, res) => {
+exports.runCommand = (req, res) => {
   const { command } = req.body;
 
-  try {
-    const output = await executeCommand(command);
-    res.status(200).json({ success: true, output });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+  if (!isCommandAllowed(command)) {
+    return res.status(400).json({ error: 'Command not allowed' });
   }
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      return res.status(500).json({ error: stderr });
+    }
+    res.status(200).json({ output: stdout });
+  });
 };
