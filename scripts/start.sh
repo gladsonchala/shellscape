@@ -1,5 +1,5 @@
 #!/bin/bash
 echo "Starting backend..."
-(cd backend && npm install && npm run start) &
+(cd backend && npm ci && npm run start) &
 echo "Starting frontend..."
-(cd frontend && npm install && npm run start)
+(cd frontend && npm ci && npm run start)
